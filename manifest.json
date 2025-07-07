@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Prompt Manager",
+  "version": "1.0",
+  "description": "A Chrome extension for creating, organizing, searching, and utilizing text prompts with tagging and keyboard shortcuts.",
+  "permissions": [
+    "storage",
+    "clipboardWrite",
+    "commands"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Prompt Manager"
+  },
+  "commands": {
+    "activate-search": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F"
+      },
+      "description": "Activate search bar"
+    },
+    "copy-prompt": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+C"
+      },
+      "description": "Copy selected prompt"
+    },
+    "create-prompt": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+N"
+      },
+      "description": "Create a new prompt"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

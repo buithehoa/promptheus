@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Manager</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Prompt Manager</h1>
+        </header>
+
+        <div class="search-bar-container">
+            <input type="text" id="search-input" placeholder="Search prompts or @tags...">
+            <div id="tag-autocomplete-suggestions" class="autocomplete-suggestions"></div>
+            <button id="new-prompt-button" class="icon-button" title="Create New Prompt">&#x2795;</button> <!-- Plus icon -->
+        </div>
+
+        <div class="main-content">
+            <!-- Prompt List View -->
+            <div id="prompt-list-view" class="view active">
+                <ul id="prompt-list" class="prompt-list">
+                    <!-- Prompt items will be dynamically loaded here by popup.js -->
+                    <li class="no-prompts-message" id="no-prompts-message">No prompts found. Click '+' to add one!</li>
+                </ul>
+            </div>
+
+            <!-- Prompt Detail View -->
+            <div id="prompt-detail-view" class="view hidden">
+                <div class="detail-header">
+                    <h2 id="detail-prompt-title" class="prompt-title"></h2>
+                    <div class="detail-actions">
+                        <button id="copy-prompt-button" class="icon-button" title="Copy Prompt">&#x2398;</button> <!-- Copy icon -->
+                        <button id="edit-prompt-button" class="icon-button" title="Edit Prompt">&#x270E;</button> <!-- Pencil icon -->
+                        <button id="delete-prompt-button" class="icon-button" title="Delete Prompt">&#x1F5D1;</button> <!-- Trash can icon -->
+                    </div>
+                </div>
+                <div id="detail-prompt-content" class="prompt-content"></div>
+                <div id="detail-prompt-tags" class="prompt-tags"></div>
+                <button id="back-to-list-button" class="secondary-button">Back to List</button>
+            </div>
+
+            <!-- Prompt Creation/Edit Form View -->
+            <div id="prompt-form-view" class="view hidden">
+                <h2 id="form-title">New Prompt</h2>
+                <input type="hidden" id="form-prompt-id"> <!-- Hidden field to store prompt ID for editing -->
+                <div class="form-group">
+                    <label for="form-prompt-title">Title:</label>
+                    <input type="text" id="form-prompt-title" placeholder="Enter prompt title" required>
+                </div>
+                <div class="form-group">
+                    <label for="form-prompt-content">Content:</label>
+                    <textarea id="form-prompt-content" placeholder="Enter prompt content" rows="8" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="form-prompt-tags">Tags (comma-separated):</label>
+                    <input type="text" id="form-prompt-tags" placeholder="e.g., ai, writing, marketing">
+                </div>
+                <div class="form-actions">
+                    <button id="save-prompt-button" class="primary-button">Save Prompt</button>
+                    <button id="cancel-form-button" class="secondary-button">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

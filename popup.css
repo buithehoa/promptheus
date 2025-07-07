@@ -1,0 +1,353 @@
+:root {
+    --bg-color: #f0f4f8; /* Light blue-gray, soothing */
+    --text-color: #334155; /* Dark slate gray */
+    --primary-color: #4f46e5; /* Indigo */
+    --primary-hover-color: #6366f1;
+    --secondary-color: #64748b; /* Slate gray */
+    --secondary-hover-color: #94a3b8;
+    --border-color: #cbd5e1; /* Light gray */
+    --card-bg-color: #ffffff; /* White for cards/elements */
+    --accent-color: #a78bfa; /* Light purple for highlights */
+    --danger-color: #ef4444; /* Red for delete */
+    --danger-hover-color: #dc2626;
+    --font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    --border-radius: 8px;
+    --padding-base: 16px;
+}
+
+body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-width: 500px; /* Ensure overall popup is visible and not too narrow */
+    min-height: 450px; /* Ensure a reasonable height */
+    overflow-y: auto; /* Allow scrolling if content exceeds height */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: var(--padding-base);
+    gap: var(--padding-base);
+    max-width: 600px; /* Prevent it from getting too wide */
+    margin: 0 auto; /* Center the container */
+}
+
+.header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    color: var(--primary-color);
+}
+
+/* Search Bar and New Prompt Button */
+.search-bar-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    position: relative; /* For autocomplete positioning */
+}
+
+#search-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+}
+
+#search-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+/* Autocomplete Suggestions */
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%; /* Position below the input */
+    left: 0;
+    right: 0;
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 5px;
+    list-style: none;
+    padding: 0;
+    display: none; /* Hidden by default, shown by JS */
+}
+
+.autocomplete-suggestions.visible {
+    display: block;
+}
+
+.autocomplete-suggestion-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: var(--text-color);
+}
+
+.autocomplete-suggestion-item:hover,
+.autocomplete-suggestion-item.selected { /* For keyboard navigation */
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: var(--padding-base);
+}
+
+/* View Management */
+.view {
+    display: none;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.view.active {
+    display: flex;
+}
+
+.view.hidden {
+    display: none;
+}
+
+/* Prompt List */
+.prompt-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto; /* Enable scrolling for the list */
+    max-height: 300px; /* Limit height for list view */
+}
+
+.prompt-item {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.prompt-item:last-child {
+    border-bottom: none;
+}
+
+.prompt-item:hover {
+    background-color: var(--bg-color);
+}
+
+.prompt-item.selected {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.prompt-item-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: inherit; /* Inherit color from parent (for selected state) */
+}
+
+.prompt-item-preview {
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.prompt-item.selected .prompt-item-preview {
+    color: white;
+    opacity: 0.9;
+}
+
+.no-prompts-message {
+    text-align: center;
+    padding: 20px;
+    color: var(--secondary-color);
+    font-style: italic;
+}
+
+/* Prompt Detail View */
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detail-prompt-title {
+    margin: 0;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    word-break: break-word; /* Allow long titles to wrap */
+}
+
+.detail-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.detail-prompt-content {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 15px;
+    font-size: 1em;
+    line-height: 1.6;
+    white-space: pre-wrap; /* Preserve whitespace and line breaks */
+    word-break: break-word; /* Break long words */
+    max-height: 250px; /* Limit height for content */
+    overflow-y: auto; /* Allow scrolling for content */
+}
+
+.prompt-tags {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+/* Prompt Form View */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: calc(100% - 20px); /* Account for padding */
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Buttons */
+.icon-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--secondary-color);
+    transition: color 0.2s ease, transform 0.2s ease;
+    padding: 5px;
+    border-radius: 50%; /* Make it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; /* Fixed size for consistent icons */
+    height: 36px;
+}
+
+.icon-button:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* Specific icon button colors */
+#delete-prompt-button {
+    color: var(--danger-color);
+}
+
+#delete-prompt-button:hover {
+    color: var(--danger-hover-color);
+}
+
+.primary-button,
+.secondary-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-weight: 600;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.primary-button:hover {
+    background-color: var(--primary-hover-color);
+    transform: translateY(-1px);
+}
+
+.secondary-button {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.secondary-button:hover {
+    background-color: var(--secondary-hover-color);
+    transform: translateY(-1px);
+}
