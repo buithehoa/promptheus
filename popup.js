@@ -278,6 +278,7 @@ async function copyToClipboard(text) {
         await navigator.clipboard.writeText(text);
         log('Text copied to clipboard successfully.');
         showUIMessage('Prompt content copied to clipboard!', 'success');
+        window.close();
     } catch (err) {
         log('Failed to copy text to clipboard.', 'error', err);
         showUIMessage('Failed to copy text to clipboard. Please ensure clipboard permissions are granted.', 'error');
