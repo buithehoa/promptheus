@@ -145,12 +145,15 @@ function renderPromptList(promptsToDisplay) {
                 <div class="prompt-item-preview">${escapeHTML(prompt.content.substring(0, 100))}...</div>
             </div>
             <div>
-                <button id="view-prompt-button" class="icon-button">View</button>
+                <button id="view-prompt-button" class="icon-button" title="View Prompt">
+                    <i data-feather="maximize"></i>
+                </button>
             </div>
         `;
         promptList.appendChild(listItem);
     });
     log('Prompt list rendered.');
+    feather.replace();
 }
 
 /**
@@ -608,4 +611,5 @@ function escapeHTML(str) {
 
 // Initialize the popup when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', initializePopup);
+feather.replace();
 log('DOMContentLoaded event listener added.');

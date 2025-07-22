@@ -323,6 +323,12 @@ body {
     transform: scale(1.1);
 }
 
+.feather {
+    width: 20px;
+    height: 20px;
+    stroke: #555;
+}
+
 /* Specific icon button colors */
 #delete-prompt-button {
     color: var(--danger-color);
