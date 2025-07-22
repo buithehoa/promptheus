@@ -140,8 +140,13 @@ function renderPromptList(promptsToDisplay) {
         listItem.className = 'prompt-item';
         listItem.dataset.id = prompt.id;
         listItem.innerHTML = `
-            <div class="prompt-item-title">${escapeHTML(prompt.title)}</div>
-            <div class="prompt-item-preview">${escapeHTML(prompt.content.substring(0, 100))}...</div>
+            <div>
+                <div class="prompt-item-title">${escapeHTML(prompt.title)}</div>
+                <div class="prompt-item-preview">${escapeHTML(prompt.content.substring(0, 100))}...</div>
+            </div>
+            <div>
+                <button id="view-prompt-button" class="icon-button">View</button>
+            </div>
         `;
         promptList.appendChild(listItem);
     });
@@ -445,10 +450,34 @@ async function initializePopup() {
 
     if (promptList) {
         promptList.addEventListener('click', (event) => {
-            const listItem = event.target.closest('.prompt-item');
-            if (listItem && listItem.dataset.id) {
-                log(`Prompt item clicked: ${listItem.dataset.id}`);
-                showPromptDetails(listItem.dataset.id);
+            // Check if clicking the view button
+            if (event.target.closest('#view-prompt-button')) {
+                // Get the parent li element that contains the prompt ID
+                const listItem = event.target.closest('.prompt-item');
+                if (listItem && listItem.dataset.id) {
+                    log(`View button clicked for prompt ID: ${listItem.dataset.id}`);
+                    showPromptDetails(listItem.dataset.id);
+                    // Stop propagation to prevent showing details
+                    event.stopPropagation();
+                }
+            }
+            // Check if clicking the content area (first div)
+            else if (event.target.closest('.prompt-item > div:first-child') ||
+                    event.target.closest('.prompt-item-title') ||
+                    event.target.closest('.prompt-item-preview')) {
+                const listItem = event.target.closest('.prompt-item');
+                if (listItem && listItem.dataset.id) {
+                    log(`Prompt content area clicked: ${listItem.dataset.id}`);
+                    const promptId = listItem.dataset.id;
+                    const prompt = allPrompts.find(p => p.id === promptId);
+                    if (prompt) {
+                        // Pass the actual content to copyToClipboard
+                        copyToClipboard(prompt.content);
+                    } else {
+                        log(`Prompt with ID ${promptId} not found for copying.`, 'warn');
+                        showUIMessage('Prompt not found for copying.', 'error');
+                    }
+                }
             }
         });
     } else {

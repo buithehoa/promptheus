@@ -146,11 +146,22 @@ body {
 
 .prompt-item {
     display: flex;
-    flex-direction: column;
     padding: 12px 15px;
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     transition: background-color 0.2s ease;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.prompt-item > div:first-child {
+  flex: 1;
+  overflow: hidden;
+}
+
+.prompt-item > div:last-child {
+  margin-left: 10px;
+  flex-shrink: 0;
 }
 
 .prompt-item:last-child {
