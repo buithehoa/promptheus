@@ -194,6 +194,18 @@ body {
     max-width: 100%;
 }
 
+.prompt-item-title, .prompt-item-preview {
+  user-select: none;
+  -webkit-user-select: none; /* For Safari */
+  pointer-events: none;
+}
+
+/* Keep the parent div clickable */
+.prompt-item > div:first-child {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
 .prompt-item.selected .prompt-item-preview {
     color: white;
     opacity: 0.9;
